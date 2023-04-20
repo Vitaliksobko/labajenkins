@@ -9,13 +9,21 @@ pipeline {
                 '''
             }
         }
+        stage('Checkout') {
+            steps{
+                git branch: 'main',
+                    url: 'https://github.com/bakavets/docker-lessons.git'        
+                }
+        }
         stage('Build docker image') {
             steps {
                 sh '''
                     docker build -t vitalikanyashka/jenkins_images .
                 '''
             }
+            
         }
+        
         stage('Push docker image to DockerHub') {
             steps {
                 withDockerRegistry(credentialsId: 'docker-hub-cred-vitalikanyashka', url: 'https://index.docker.io/v1/') {
