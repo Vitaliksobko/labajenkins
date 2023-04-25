@@ -9,12 +9,7 @@ pipeline {
                 '''
             }
         }
-        stage('Checkout') {
-            steps{
-                git branch: 'main',
-                    url: 'https://github.com/Vitaliksobko/labajenkins.git'        
-                }
-        }
+        
         stage('Build docker image') {
             steps {
                 sh '''
@@ -24,9 +19,10 @@ pipeline {
             
         }
         
+        
         stage('Push docker image to DockerHub') {
             steps {
-                withDockerRegistry(credentialsId: 'Dockerhub', url: 'https://index.docker.io/v1/') {
+                withCredentials([usernamePassword(credentialsId: 'new_id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         docker push vitalikanyashka/jenkins_images
                     '''
