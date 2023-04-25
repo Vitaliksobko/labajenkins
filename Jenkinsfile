@@ -21,11 +21,19 @@ pipeline {
             steps{
                 withDockerRegistry(credentialsId: 'Docker_jenkins', url: 'https://index.docker.io/v1/')  {
             sh"""
-            docker push vitalkanyashka/jenkins_images
+            docker login -u $USERNAME -p $PASSWORD
+            """
                 }
             }
         }
         
-        
+        stage('Push docker image to DockerHub') {
+            steps {
+                    sh '''
+                        docker push vitalkanyashka/jenkins_images
+                    '''
+                    
+                }
+            }
         }
 }
