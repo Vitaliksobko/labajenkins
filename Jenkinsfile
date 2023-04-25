@@ -19,7 +19,7 @@ pipeline {
         }
         stage('docker login'){
             steps{
-                withDockerRegistry(credentialsId: 'Docker_jenkins', url: 'https://index.docker.io/v1/')  {
+                withCredentials([usernamePassword(credentialsId: 'Docker_jenkins', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])  {
             sh"""
             docker login -u $USERNAME -p $PASSWORD
             """
