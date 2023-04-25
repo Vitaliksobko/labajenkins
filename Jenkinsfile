@@ -19,7 +19,7 @@ pipeline {
         }
         stage('docker login'){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'Docker', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])  {
+                withCredentials(credentialsId: 'Docker', url: 'https://index.docker.io/v1/')  {
             sh"""
             docker login -u $USERNAME -p $PASSWORD
             """
