@@ -1,8 +1,5 @@
 pipeline {
-    agent { label 'CentOS' }
-    environment{
-        TOKEN = credentials("botSecret")
-        CHAT_ID = credentials("chatId")
+    agent any
     }
     stages {
         stage('Docker version') {
