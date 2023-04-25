@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent { label 'CentOS' }
+    environment{
+        TOKEN = credentials("botSecret")
+        CHAT_ID = credentials("chatId")
+    }
     stages {
         stage('Docker version') {
             steps {
@@ -15,25 +19,14 @@ pipeline {
                     docker build -t vitalkanyashka/jenkins_images .
                 '''
             }
-            
         }
-        stage('docker login'){
-            steps{
-                withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])  {
-            sh"""
-            docker login -u $USERNAME -p $PASSWORD
-            """
-                }
-            }
-        }
-        
         stage('Push docker image to DockerHub') {
-            steps {
+            steps{
+                withDockerRegistry(credentialsId: 'Docker_jenkins', url: 'https://index.docker.io/v1/') {
                     sh '''
                         docker push vitalkanyashka/jenkins_images
                     '''
-                    
                 }
             }
         }
-}
+    }
