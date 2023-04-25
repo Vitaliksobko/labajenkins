@@ -9,33 +9,31 @@ pipeline {
                 '''
             }
         }
-        
         stage('Build docker image') {
             steps {
                 sh '''
-                    docker build -t vitalikanyashka/jenkins_images .
+                    docker build -t vitalkanyashka/jenkins_images .
                 '''
             }
             
         }
-        stage('Push docker image to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'new_id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh '''
-                         docker login -u $USERNAME -p $PASSWORD
-                    '''
+        stage('docker login'){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'new_id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])  {
+            sh"""
+            docker login -u $USERNAME -p $PASSWORD
+            """
                 }
             }
         }
+        
         stage('Push docker image to DockerHub') {
             steps {
                     sh '''
-                        docker push maksi123/jenkins_trying
+                        docker push vitalkanyashka/jenkins_images
                     '''
                     
                 }
             }
-        
-        
-    }
+        }
 }
