@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('Docker_jenkins')
+        DOCKERHUB_CREDENTIALS = credentials('Docker_push')
     }
     stages {
         stage('Docker version') {
