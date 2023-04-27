@@ -3,15 +3,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('Docker_push')
     }
-    stages {
-        stage('Docker version') {
-            steps {
-                sh '''
-                    echo $USER
-                    docker version
-                '''
-            }
-        }
+   
         stage('Build') {
             steps {
                 sh 'docker build -t vitalkanyashka/jenkins_images .'
