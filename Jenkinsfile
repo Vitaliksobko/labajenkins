@@ -1,5 +1,7 @@
 pipeline {
     agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('Docker_jenkins')
     }
     stages {
         stage('Docker version') {
@@ -10,20 +12,26 @@ pipeline {
                 '''
             }
         }
-        stage('Build docker image') {
+        stage('Build') {
             steps {
-                sh '''
-                    docker build -t vitalkanyashka/jenkins_images .
-                '''
+                sh 'docker build -t vitalkanyashka/jenkins_images .'
             }
         }
-        stage('Push docker image to DockerHub') {
+        stage('Login') {
             steps{
-                withDockerRegistry(credentialsId: 'Docker_jenkins', url: 'https://index.docker.io/v1/') {
-                    sh '''
-                        docker push vitalkanyashka/jenkins_images
-                    '''
-                }
+                sh 'echo $DOCKERHUB_CREDENTIALS_USR | docker login -u $DOCKERHUB_CREDENTIALS_PSW --password-stdin'
+            }
+        }
+        stage('Push'){
+            steps{
+                sh 'docker push vitalkanyashka/jenkins_images'
             }
         }
     }
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
+}
+  
