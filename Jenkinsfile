@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t vitalkanyashka/kenkins_images .'
+                sh 'docker build -t vitalkanyashka/jenkins_images .'
             }
         }
         stage('Login') {
@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Push'){
             steps{
-                sh 'docker push vitalkanyashka/kenkins_images'
+                sh 'docker push vitalkanyashka/jenkins_images'
             }
         }
     }
